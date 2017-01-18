@@ -4,56 +4,64 @@ import * as vscode from 'vscode';
 
 export default class Provider implements vscode.TextDocumentContentProvider {
 
-	static scheme = 'package';
-
-	private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
-	private _documents = new Map<string, string>();
-	private _editorDecoration = vscode.window.createTextEditorDecorationType({ textDecoration: 'underline' });
+	private _scheme: string = '';
+	private _document: string = null;
 	private _subscriptions: vscode.Disposable;
 	private _packageInfos: any[] = [];
-	constructor() {
-		this._subscriptions = vscode.workspace.onDidCloseTextDocument(doc => this._documents.delete(doc.uri.toString()));
+	constructor(scheme: string) {
+		this._scheme = scheme;
+		this._subscriptions = vscode.workspace.onDidCloseTextDocument(doc => {
+			this._document = null;
+		});
 	}
+
 
 	dispose() {
 		this._subscriptions.dispose();
-		this._documents = null;
-		this._editorDecoration.dispose();
-		this._onDidChange.dispose();
+		this._document = null;
 	}
 
-	get onDidChange() {
-		return this._onDidChange.event;
-	}
 	provideTextDocumentContent(uri: vscode.Uri): string | Thenable<string> {
 
-		// already loaded?
-		let document = this._documents.get(uri.toString());
-		if (document) {
-			return document;
+		if (this._document) {
+			return this._document;
+		}
+		let includePath:string = "**/node_modules/**/package.json";
+		if(this._scheme === 'bower-package'){
+			includePath = "**/bower_components/**/package.json";
 		}
 
-		return vscode.workspace.findFiles("**/node_modules/**/package.json", "").then(result => {
+		return vscode.workspace.findFiles(includePath, "").then(result => {
 			let packageInfos = [];
 
 			return this.buildVersions(result).then((packageInfos) => {
 				let outputString: string = "";
 				let items: string[] = [];
+				packageInfos.sort(function(a, b){
+					if(a.name > b.name){
+						return 1;
+					}
+					if(a.name < b.name){
+						return -1;
+					}
+					return 0;
+				});
 				packageInfos.forEach((element, index) => {
 					var lineStr: string = element.name + ": " + element.version + "\n";
 					items.push(`  ${index + 1}` + (lineStr && `  ${lineStr}`));
 				});
+				
 				return items.join('\n');
 			});
 		});
 	}
 
 	private buildVersions(packages: vscode.Uri[]): any | Thenable<any> {
-		let promiseArray:any[] = [];
+		let promiseArray: any[] = [];
 		packages.forEach(element => {
 			promiseArray.push(this.buildVersionItem(element));
 		});
-		return Promise.all(promiseArray).then(()=>{
+		return Promise.all(promiseArray).then(() => {
 			return this._packageInfos;
 		});
 	}

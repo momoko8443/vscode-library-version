@@ -6,22 +6,23 @@ import ContentProvider from './provider';
 
 export function activate(context: ExtensionContext) {
 
-    //console.log('Congratulations, your extension "library-version" is now active!');
-
-    const provider = new ContentProvider();
-
-    const providerRegistrations = Disposable.from(
-        workspace.registerTextDocumentContentProvider(ContentProvider.scheme, provider)
-    );
-    const commandRegistration = commands.registerCommand('extension.showNpmPackageVersion', () => {
-        const uri = Uri.parse(`${ContentProvider.scheme}:package.versions`);
+    const content4NpmProvider = workspace.registerTextDocumentContentProvider('npm-package', new ContentProvider('npm-package'));
+    const content4BowerProvider = workspace.registerTextDocumentContentProvider('bower-package', new ContentProvider('bower-package'));
+    const command4NpmRegistration = commands.registerCommand('extension.showNpmPackageVersion', () => {
+        const uri = Uri.parse(`npm-package:npm-package.versions`);
+        return workspace.openTextDocument(uri).then(doc => window.showTextDocument(doc, 1));
+    });
+    const command4BowerRegistration = commands.registerCommand('extension.showBowerPackageVersion', () => {
+        const uri = Uri.parse(`bower-package:bower-package.versions`);
         return workspace.openTextDocument(uri).then(doc => window.showTextDocument(doc, 1));
     });
 
+
     context.subscriptions.push(
-        provider,
-        commandRegistration,
-        providerRegistrations
+        content4NpmProvider,
+        content4BowerProvider,
+        command4NpmRegistration,
+        command4BowerRegistration
     );
 }
 

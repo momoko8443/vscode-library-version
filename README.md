@@ -2,11 +2,11 @@
 
 ## Features
 
-library-version could list all versions of dependent libraries (npm packages)
+library-version could list all versions of dependent libraries (npm packages and bower packages)
 
 ## Usage
 * Press F1 to popup Command Palette
-* Type "Version: npm packages" then press Enter
+* Type "Version: npm packages" or "Version: bower packages" then press Enter
 * All packages' version will be display in package.versions
 
 ## Known Issues
@@ -14,6 +14,10 @@ library-version could list all versions of dependent libraries (npm packages)
 If you found any issues, you could commit it at [Issue](https://github.com/momoko8443/vscode-library-version/issues)
 
 ## Release Notes
+
+### 0.1.2
+
+Improvement for code, support bower packages' version
 
 ### 0.1.1 
 

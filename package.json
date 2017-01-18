@@ -2,7 +2,7 @@
     "name": "library-version",
     "displayName": "Library Version",
     "description": "this extension could show the vision of libraries which in node_modules, the version will be displayed in package.versions",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "publisher": "momoko8443",
     "engines": {
         "vscode": "^1.5.0"
@@ -11,7 +11,8 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.showNpmPackageVersion"
+        "onCommand:extension.showNpmPackageVersion",
+        "onCommand:extension.showBowerPackageVersion"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -19,6 +20,10 @@
             {
                 "command": "extension.showNpmPackageVersion",
                 "title": "Version: npm packages"
+            },
+            {
+                "command": "extension.showBowerPackageVersion",
+                "title": "Version: bower packages"
             }
         ],
         "languages": [
