@@ -15,6 +15,9 @@ If you found any issues, you could commit it at [Issue](https://github.com/momok
 
 ## Release Notes
 
+### 0.1.3
+Modified description for library-version
+
 ### 0.1.2
 
 Improvement for code, support bower packages' version
