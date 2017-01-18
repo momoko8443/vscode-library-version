@@ -7,9 +7,9 @@ library-version could list all versions of dependent libraries (npm packages and
 ## Usage
 * Press F1 to popup Command Palette
 * Type "Version: npm packages" or "Version: bower packages" then press Enter
-* All packages' version will be display in package.versions
+* All packages' version will be listed in package.versions
 
-![install and work] (https://raw.githubusercontent.com/momoko8443/vscode-library-version/master/preview.gif)
+![install and work](https://raw.githubusercontent.com/momoko8443/vscode-library-version/master/preview.gif)
 
 ## Known Issues
 
@@ -17,6 +17,8 @@ If you found any issues, you could commit it at [Issue](https://github.com/momok
 
 ## Release Notes
 
+### 0.1.5
+fixed problem that gif doesn't work
 ### 0.1.4
 add animation gif to preview
 
