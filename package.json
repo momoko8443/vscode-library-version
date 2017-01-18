@@ -2,7 +2,7 @@
     "name": "library-version",
     "displayName": "Library Version",
     "description": "this extension could show the vision of libraries which in node_modules, the version will be displayed in package.versions",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "momoko8443",
     "engines": {
         "vscode": "^1.5.0"
@@ -15,27 +15,31 @@
     ],
     "main": "./out/src/extension",
     "contributes": {
-        "commands": [{
+        "commands": [
+            {
                 "command": "extension.showNpmPackageVersion",
                 "title": "Version: npm packages"
             }
         ],
-        "languages": [{
-            "id": "versions",
-            "aliases": [
-                "Versions"
-            ],
-            "extensions": [
-                ".versions"
-            ]
-        }],
-        "grammars": [{
-            "language": "versions",
-            "path": "./versions-syntax.json",
-            "scopeName": "source.versions"
-        }]
+        "languages": [
+            {
+                "id": "versions",
+                "aliases": [
+                    "Versions"
+                ],
+                "extensions": [
+                    ".versions"
+                ]
+            }
+        ],
+        "grammars": [
+            {
+                "language": "versions",
+                "path": "./versions-syntax.json",
+                "scopeName": "source.versions"
+            }
+        ]
     },
-
     "scripts": {
         "vscode:prepublish": "tsc -p ./",
         "compile": "tsc -watch -p ./",

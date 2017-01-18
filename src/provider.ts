@@ -1,7 +1,6 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import * as fs from 'fs';
 
 export default class Provider implements vscode.TextDocumentContentProvider {
 
@@ -11,7 +10,7 @@ export default class Provider implements vscode.TextDocumentContentProvider {
 	private _documents = new Map<string, string>();
 	private _editorDecoration = vscode.window.createTextEditorDecorationType({ textDecoration: 'underline' });
 	private _subscriptions: vscode.Disposable;
-
+	private _packageInfos: any[] = [];
 	constructor() {
 		this._subscriptions = vscode.workspace.onDidCloseTextDocument(doc => this._documents.delete(doc.uri.toString()));
 	}
@@ -34,22 +33,38 @@ export default class Provider implements vscode.TextDocumentContentProvider {
 			return document;
 		}
 
-		return vscode.workspace.findFiles("**/node_modules/**/package.json","").then(function (result) {
+		return vscode.workspace.findFiles("**/node_modules/**/package.json", "").then(result => {
 			let packageInfos = [];
-			result.forEach(element => {
-				let data: string = fs.readFileSync(element.path, "utf-8");
-				let item: Object = JSON.parse(data);
-				let packageInfo: Object = { name: item['name'], version: item['version'] };
-				packageInfos.push(packageInfo);
+
+			return this.buildVersions(result).then((packageInfos) => {
+				let outputString: string = "";
+				let items: string[] = [];
+				packageInfos.forEach((element, index) => {
+					var lineStr: string = element.name + ": " + element.version + "\n";
+					items.push(`  ${index + 1}` + (lineStr && `  ${lineStr}`));
+				});
+				return items.join('\n');
 			});
-			let outputString: string = "";
-			let items: string[] = [];
-			packageInfos.forEach((element, index) => {
-				var lineStr: string = element.name + ": " + element.version + "\n";
-				items.push(`  ${index + 1}` + (lineStr && `  ${lineStr}`));
-			});
-			console.log(JSON.stringify(items));
-			return items.join('\n');
+		});
+	}
+
+	private buildVersions(packages: vscode.Uri[]): any | Thenable<any> {
+		let promiseArray:any[] = [];
+		packages.forEach(element => {
+			promiseArray.push(this.buildVersionItem(element));
+		});
+		return Promise.all(promiseArray).then(()=>{
+			return this._packageInfos;
+		});
+	}
+
+
+	private buildVersionItem(path: vscode.Uri): any | Thenable<any> {
+		return vscode.workspace.openTextDocument(path).then((document) => {
+			let item: Object = JSON.parse(document.getText());
+			let packageInfo: Object = { name: item['name'], version: item['version'] };
+			this._packageInfos.push(packageInfo);
+			return packageInfo;
 		});
 	}
 }
