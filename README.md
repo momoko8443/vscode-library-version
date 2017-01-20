@@ -17,6 +17,9 @@ If you found any issues, you could commit it at [Issue](https://github.com/momok
 
 ## Release Notes
 
+### 0.1.6
+Improvement for code
+
 ### 0.1.5
 fixed problem that gif doesn't work
 ### 0.1.4

@@ -9,11 +9,11 @@ export function activate(context: ExtensionContext) {
     const content4NpmProvider = workspace.registerTextDocumentContentProvider('npm-package', new ContentProvider('npm-package'));
     const content4BowerProvider = workspace.registerTextDocumentContentProvider('bower-package', new ContentProvider('bower-package'));
     const command4NpmRegistration = commands.registerCommand('extension.showNpmPackageVersion', () => {
-        const uri = Uri.parse(`npm-package:npm-package.versions`);
+        const uri = Uri.parse('npm-package:npm-package.versions');
         return workspace.openTextDocument(uri).then(doc => window.showTextDocument(doc, 1));
     });
     const command4BowerRegistration = commands.registerCommand('extension.showBowerPackageVersion', () => {
-        const uri = Uri.parse(`bower-package:bower-package.versions`);
+        const uri = Uri.parse('bower-package:bower-package.versions');
         return workspace.openTextDocument(uri).then(doc => window.showTextDocument(doc, 1));
     });
 

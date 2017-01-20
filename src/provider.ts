@@ -32,20 +32,11 @@ export default class Provider implements vscode.TextDocumentContentProvider {
 		}
 
 		return vscode.workspace.findFiles(includePath, "").then(result => {
-			let packageInfos = [];
+			//let packageInfos = [];
 
 			return this.buildVersions(result).then((packageInfos) => {
 				let outputString: string = "";
 				let items: string[] = [];
-				packageInfos.sort(function(a, b){
-					if(a.name > b.name){
-						return 1;
-					}
-					if(a.name < b.name){
-						return -1;
-					}
-					return 0;
-				});
 				packageInfos.forEach((element, index) => {
 					var lineStr: string = element.name + ": " + element.version + "\n";
 					items.push(`  ${index + 1}` + (lineStr && `  ${lineStr}`));
@@ -61,8 +52,17 @@ export default class Provider implements vscode.TextDocumentContentProvider {
 		packages.forEach(element => {
 			promiseArray.push(this.buildVersionItem(element));
 		});
-		return Promise.all(promiseArray).then(() => {
-			return this._packageInfos;
+		return Promise.all(promiseArray).then((result) => {
+			result.sort(function(a, b){
+				if(a.name > b.name){
+					return 1;
+				}
+				if(a.name < b.name){
+					return -1;
+				}
+				return 0;
+			});
+			return result;
 		});
 	}
 
@@ -71,7 +71,6 @@ export default class Provider implements vscode.TextDocumentContentProvider {
 		return vscode.workspace.openTextDocument(path).then((document) => {
 			let item: Object = JSON.parse(document.getText());
 			let packageInfo: Object = { name: item['name'], version: item['version'] };
-			this._packageInfos.push(packageInfo);
 			return packageInfo;
 		});
 	}
