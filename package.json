@@ -2,7 +2,7 @@
     "name": "library-version",
     "displayName": "Library Version",
     "description": "Show all version for installed npm/bower packages",
-    "version": "0.1.9",
+    "version": "1.0.9",
     "publisher": "momoko8443",
     "engines": {
         "vscode": "^1.5.0"

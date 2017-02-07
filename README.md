@@ -17,6 +17,9 @@ If you found any issues, you could commit it at [Issue](https://github.com/momok
 
 ## Release Notes
 
+### 1.0.9
+have to update version code bigger than 1.0.8, because I couldn't find a way to remove incorrect version code 1.0.8, sorry
+
 ### 0.1.9
 modify icon
 
