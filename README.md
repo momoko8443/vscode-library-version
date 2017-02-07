@@ -17,6 +17,10 @@ If you found any issues, you could commit it at [Issue](https://github.com/momok
 
 ## Release Notes
 
+### 0.1.8
+Add icon for extension
+### 0.1.7
+
 ### 0.1.6
 Improvement for code
 
